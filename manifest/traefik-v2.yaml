@@ -55,9 +55,9 @@ spec:
   data:
     - secretKey: username
       remoteRef:
-        key: ingress-traefik-v2
+        key: traefik-v2
         property: username
     - secretKey: password
       remoteRef:
-        key: ingress-traefik-v2
+        key: traefik-v2
         property: password

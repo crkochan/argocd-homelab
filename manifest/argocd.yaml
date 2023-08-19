@@ -212,6 +212,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: argocd.<path:stringreplacesecret#domain>
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: zerossl
 spec:
   ingressClassName: nginx
   rules:
@@ -233,6 +234,7 @@ metadata:
   namespace: argocd
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    cert-manager.io/cluster-issuer: zerossl
 spec:
   ingressClassName: nginx
   rules:

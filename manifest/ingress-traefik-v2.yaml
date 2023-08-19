@@ -1,0 +1,66 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: ingress-traefik-v2
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-traefik-v2
+  namespace: argocd
+spec:
+  destination:
+    namespace: ingress-traefik-v2
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: traefik
+    repoURL: https://traefik.github.io/charts
+    targetRevision: 24.0.0
+    helm:
+      values: |
+        service:
+          annotations:
+            external-dns.alpha.kubernetes.io/hostname: "kube-traefik.<path:stringreplacesecret#domain>"
+        ingressRoute:
+          dashboard:
+            enabled: true
+            matchRule: Host("http://kube-traefik.<path:stringreplacesecret#domain>") && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+            entryPoints: ["websecure"]
+            middlewares:
+              - name: traefik-dashboard-auth
+        extraObjects:
+          - apiVersion: traefik.io/v1alpha1
+            kind: Middleware
+            metadata:
+              name: traefik-dashboard-auth
+            spec:
+              basicAuth:
+                secret: traefik-dashboard-auth-secret
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: traefik-dashboard-auth-secret
+  namespace: ingress-traefik-v2
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: username
+      remoteRef:
+        key: ingress-traefik-v2
+        property: username
+    - secretKey: password
+      remoteRef:
+        key: ingress-traefik-v2
+        property: password

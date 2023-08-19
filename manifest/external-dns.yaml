@@ -1,0 +1,74 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: external-dns
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: external-dns
+  namespace: external-dns
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: pihole-password
+      remoteRef:
+        key: external-dns
+        property: pihole-password
+    - secretKey: pihole-url
+      remoteRef:
+        key: external-dns
+        property: pihole-url
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+spec:
+  destination:
+    namespace: external-dns
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: external-dns
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 6.23.5
+    helm:
+      values: |
+        annotationFilter: "external-dns.custom/type in (public, private)"
+        crd:
+          create: true
+        extraEnvVars:
+          - name: EXTERNAL_DNS_PIHOLE_SERVER
+            valueFrom:
+              secretKeyRef:
+                name: external-dns
+                key: pihole-url
+          - name: EXTERNAL_DNS_PIHOLE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: external-dns
+                key: pihole-password
+        fullnameOverride: external-dns
+        policy: upsert-only
+        provider: pihole
+        registry: noop
+        sources:
+          - service
+          - ingress
+          - crd
+        txtSuffix: .external-dns
+        txtOwnerId: kubernetes
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true

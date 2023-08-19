@@ -22,18 +22,30 @@ spec:
         service:
           annotations:
             external-dns.alpha.kubernetes.io/hostname: "kube-traefik.<path:stringreplacesecret#domain>"
-        ingressRoute:
-          dashboard:
-            enabled: true
-            matchRule: Host("kube-traefik.<path:stringreplacesecret#domain>") && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-            entryPoints: ["websecure"]
-            middlewares:
-              - name: traefik-dashboard-auth
         extraObjects:
+          - apiVersion: traefik.containo.us/v1alpha1
+            kind: IngressRoute
+            metadata:
+              name: traefik-dashboard
+              namespace: ingress-traefik-v2
+              annotations: 
+                kubernetes.io/ingress.class: traefik-external
+            spec:
+              entryPoints:
+                - websecure
+              routes:
+                - match: Host("kube-traefik.<path:stringreplacesecret#domain>") && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+                  kind: Rule
+                  middlewares:
+                    - name: traefik-dashboard-basicauth
+                      namespace: ingress-traefik-v2
+                  services:
+                    - name: api@internal
+                      kind: TraefikService
           - apiVersion: traefik.containo.us/v1alpha1
             kind: Middleware
             metadata:
-              name: traefik-dashboard-auth
+              name: traefik-dashboard-basicauth
             spec:
               basicAuth:
                 secret: traefik-dashboard-auth-secret

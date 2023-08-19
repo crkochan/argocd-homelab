@@ -21,10 +21,18 @@ spec:
   target:
     creationPolicy: Owner
   data:
-    - secretKey: token
+    - secretKey: sso-client-id
       remoteRef:
-        key: sso
-        property: argocd
+        key: argocd
+        property: sso-client-id
+    - secretKey: sso-client-secret
+      remoteRef:
+        key: argocd
+        property: sso-client-secret
+    - secretKey: sso-org
+      remoteRef:
+        key: argocd
+        property: sso-org
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -88,18 +96,14 @@ spec:
             url: "http://argocd.<path:stringreplacesecret#domain>"
             dex.config: |
               connectors:
-                - type: oidc
-                  name: authentik
-                  id: authentik
+                - type: github
+                  name: GitHub
+                  id: github
                   config:
-                    issuer: http://authentik.<path:stringreplacesecret#domain>/application/o/argocd/
-                    clientID: argocd
-                    clientSecret: $sso:token
-                    insecureEnableGroups: true
-                    scopes:
-                      - openid
-                      - profile
-                      - email
+                    clientID: $sso:sso-client-id
+                    clientSecret: $sso:sso-client-secret
+                    orgs:
+                    - name: $sso:sso-org
           rbac:
             policy.csv: |
               g, ArgoCD Admin, role:admin

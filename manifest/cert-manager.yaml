@@ -1,0 +1,75 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cert-manager
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  destination:
+    namespace: cert-manager
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: v1.12.3
+    helm:
+      values: |
+        installCRDs: "true"
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: eab-hmac-key
+      remoteRef:
+        key: cert-manager
+        property: eab-hmac-key
+    - secretKey: cf-api-token
+      remoteRef:
+        key: cert-manager
+        property: cf-api-token
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: zerossl-production
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  acme:
+    server: https://acme.zerossl.com/v2/DV90
+    privateKeySecretRef:
+      name: zerossl-prod
+    externalAccountBinding:
+      keyID: n8FewZsZpThPPMHUb-fbJQ
+      keySecretRef:
+        name: cert-manager
+        key: eab-hmac-key
+      keyAlgorithm: HS256
+    solvers:
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: cert-manager
+            key: cf-api-token
+      selector: {}

@@ -25,7 +25,7 @@ spec:
         ingressRoute:
           dashboard:
             enabled: true
-            matchRule: Host("http://kube-traefik.<path:stringreplacesecret#domain>") && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+            matchRule: Host("kube-traefik.<path:stringreplacesecret#domain>") && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
             entryPoints: ["websecure"]
             middlewares:
               - name: traefik-dashboard-auth

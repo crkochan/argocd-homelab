@@ -56,11 +56,7 @@ spec:
   target:
     creationPolicy: Owner
   data:
-    - secretKey: username
+    - secretKey: users
       remoteRef:
         key: ingress-traefik-v2
-        property: username
-    - secretKey: password
-      remoteRef:
-        key: ingress-traefik-v2
-        property: password
+        property: users

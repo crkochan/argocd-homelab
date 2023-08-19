@@ -21,8 +21,8 @@ spec:
       values: |
         controller:
           service:
-            type: ClusterIP
-            external-dns.alpha.kubernetes.io/hostname: "kube-ingress.<path:stringreplacesecret#domain>"
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: "kube-ingress.<path:stringreplacesecret#domain>"
           admissionWebhooks:
             certManager:
               enabled: true

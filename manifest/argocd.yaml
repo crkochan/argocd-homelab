@@ -242,7 +242,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: argocd.<path:stringreplacesecret#domain>
+    - host: grpc.argocd.<path:stringreplacesecret#domain>
       http:
         paths:
           - path: /

@@ -21,7 +21,7 @@ spec:
       values: |
         controller:
           extraArgs:
-            default-ssl-certificate: "ingress-nginx/wildcard-staging"
+            default-ssl-certificate: "ingress-nginx/default-wildcard"
           service:
             annotations:
               external-dns.alpha.kubernetes.io/hostname: "kube-ingress.<path:stringreplacesecret#domain>"
@@ -37,12 +37,12 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: wildcard-staging
+  name: default-wildcard
   namespace: ingress-nginx
 spec:
-  secretName: wildcard-staging
+  secretName: default-wildcard
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
   commonName: '<path:stringreplacesecret#domain>'
   dnsNames:

@@ -31,3 +31,18 @@ spec:
       allowEmpty: true
       prune: true
       selfHeal: true
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-staging
+  namespace: ingress-nginx
+spec:
+  secretName: wildcard-staging
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: '<path:stringreplacesecret#domain>'
+  dnsNames:
+  - '<path:stringreplacesecret#domain>'
+  - '*.<path:stringreplacesecret#domain>'

@@ -2,6 +2,8 @@
 
 GitOps driven homelab using ArgoCD
 
+Forked from: https://github.com/acelinkio/argocd-homelab
+
 # Prerequisites
 
 - 1Password

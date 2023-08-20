@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: homelab
   source:
-    chart: connect
+    chart: descheduler
     repoURL: https://kubernetes-sigs.github.io/descheduler
     targetRevision: 0.27.1
     helm:

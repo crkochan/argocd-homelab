@@ -100,10 +100,10 @@ spec:
                   name: GitHub
                   id: github
                   config:
-                    clientID: $sso:sso-client-id
-                    clientSecret: $sso:sso-client-secret
+                    clientID: <path:argocd#sso-client-id>
+                    clientSecret: <path:argocd#sso-client-secret>
                     orgs:
-                    - name: $sso:sso-org
+                    - name: <path:argocd#sso-org>
           rbac:
             policy.csv: |
               g, ArgoCD Admin, role:admin

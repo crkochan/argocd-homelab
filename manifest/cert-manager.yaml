@@ -39,14 +39,22 @@ spec:
   target:
     creationPolicy: Owner
   data:
-    - secretKey: eab-hmac-key
-      remoteRef:
-        key: cert-manager
-        property: eab-hmac-key
     - secretKey: cf-api-token
       remoteRef:
         key: cert-manager
         property: cf-api-token
+    - secretKey: eab-kid
+      remoteRef:
+        key: cert-manager
+        property: eab-kid
+    - secretKey: eab-hmac-key
+      remoteRef:
+        key: cert-manager
+        property: eab-hmac-key
+    - secretKey: le-email
+      remoteRef:
+        key: cert-manager
+        property: le-email
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -61,7 +69,7 @@ spec:
     privateKeySecretRef:
       name: zerossl-prod
     externalAccountBinding:
-      keyID: n8FewZsZpThPPMHUb-fbJQ
+      keyID: $cert-mananger:eab-kid
       keySecretRef:
         name: cert-manager
         key: eab-hmac-key
@@ -72,4 +80,43 @@ spec:
           apiTokenSecretRef:
             name: cert-manager
             key: cf-api-token
-      selector: {}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  acme:
+    email: $cert-mananger:le-email
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: cert-manager
+            key: cf-api-token
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  acme:
+    email: $cert-mananger:le-email
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: cert-manager
+            key: cf-api-token

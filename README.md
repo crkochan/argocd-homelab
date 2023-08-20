@@ -79,7 +79,7 @@ kubectl create namespace external-secrets
 kubectl create secret generic 1passwordconnect --from-file=token=bootstrap/1password-token.secret -n external-secrets
 
 kubectl create namespace argocd
-kubectl create secret generic stringreplacesecret -n argocd --from-literal domain=<VALUE-FROM-SECRET> --from-literal metallbpooladdress=<VALUE-FROM-SECRET>
+kubectl create secret generic stringreplacesecret -n argocd --from-literal domain=<VALUE-FROM-VAULT> --from-literal metallbpooladdress=<VALUE-FROM-VAULT>
 
 # Install ArgoCD
 helm template --repo https://argoproj.github.io/argo-helm --version 5.43.3 --namespace argocd argocd argo-cd --values bootstrap/argocd-values.yaml | kubectl apply -f -

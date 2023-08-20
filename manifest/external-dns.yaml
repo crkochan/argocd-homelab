@@ -57,7 +57,7 @@ spec:
                 name: external-dns
                 key: pihole-password
         fullnameOverride: external-dns
-        logLevel: debug
+        logLevel: info
         policy: upsert-only
         provider: pihole
         registry: noop

@@ -21,7 +21,7 @@ spec:
       values: |
         controller:
           extraArgs:
-            default-ssl-certificate=ingress-nginx/wildcard-staging
+            default-ssl-certificate: "ingress-nginx/wildcard-staging"
           service:
             annotations:
               external-dns.alpha.kubernetes.io/hostname: "kube-ingress.<path:stringreplacesecret#domain>"

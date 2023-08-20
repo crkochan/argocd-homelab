@@ -20,8 +20,8 @@ spec:
     helm:
       values: |
         controller:
-          wildcardTLS:
-            cert: ingress-nginx/wildcard-staging
+          extraArgs:
+            default-ssl-certificate=ingress-nginx/wildcard-staging
           service:
             annotations:
               external-dns.alpha.kubernetes.io/hostname: "kube-ingress.<path:stringreplacesecret#domain>"

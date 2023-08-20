@@ -225,7 +225,11 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 80
+                  name: http
+  tls:
+  - hosts:
+    - argocd.<path:stringreplacesecret#domain>
+    secretName: argocd-ingress-http
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -247,4 +251,8 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 80
+                  name: https
+  tls:
+  - hosts:
+    - grpc.argocd.<path:stringreplacesecret#domain>
+    secretName: argocd-ingress-grpc

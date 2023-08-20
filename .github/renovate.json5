@@ -3,6 +3,18 @@
   "extends": [
     "config:base"
   ],
+  "packageRules": [
+    {
+      "matchManagers": ["argocd"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
+      "groupName": "argocd non-major updates",
+      "automerge": true
+    },
+    {
+      "matchManagers": ["argocd"],
+      "matchUpdateTypes": ["major"]
+    }
+  ],
   "prHourlyLimit": 3,
   "argocd": {
     "fileMatch": [

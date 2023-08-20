@@ -34,6 +34,28 @@ spec:
         key: argocd
         property: sso-org
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: stringreplacesecret
+  namespace: argocd
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: domain
+      remoteRef:
+        key: stringreplacesecret
+        property: domain
+    - secretKey: metallbpooladdress
+      remoteRef:
+        key: stringreplacesecret
+        property: metallbpooladdress
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -182,28 +204,6 @@ spec:
       allowEmpty: true
       prune: true
       selfHeal: true
----
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: stringreplacesecret
-  namespace: argocd
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-  data:
-    - secretKey: domain
-      remoteRef:
-        key: stringreplacesecret
-        property: domain
-    - secretKey: metallbpooladdress
-      remoteRef:
-        key: stringreplacesecret
-        property: metallbpooladdress
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

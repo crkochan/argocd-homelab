@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: descheduler
+  namespace: argocd
+spec:
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: connect
+    repoURL: https://kubernetes-sigs.github.io/descheduler
+    targetRevision: 0.27.1
+    helm:
+      values: |
+        schedule: '*/2 * * * *'
+        suspend: 'false'
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true

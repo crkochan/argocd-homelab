@@ -49,15 +49,19 @@ homelab                        # vault used for containing secrets
 - Follow https://developer.1password.com/docs/connect/get-started/#step-1-set-up-a-secrets-automation-workflow _1Password.com_ tab for generating `1password-credentials.json` and save into bootstrap directory.
 - Follow https://developer.1password.com/docs/connect/get-started/#step-1-set-up-a-secrets-automation-workflow _1Password CLI_ tab for generating a 1password connect token and save as `1password-token.secret` in bootstrap directory.
 
-## Cloudflare Credentials
+## Various Credentials
 
 ### external-dns
 - In the homelab vault, create a password type secret named `external-dns`
-- Follow https://developers.cloudflare.com/fundamentals/api/get-started/create-token/ for generating a token and save into key named `token`
+- Save the url to the external Pi-hole server into a key named `pihole-url`.
+- Save the password to the external Pi-hole server into a key named `pihole-password`.
 
 ### cert-manager
 - In the homelab vault, create a password type secret named `cert-manager`
-- Follow https://cert-manager.io/docs/configuration/acme/dns01/cloudflare/#api-tokens for generating a token and save into key named `token`
+- Follow https://cert-manager.io/docs/configuration/acme/dns01/cloudflare/#api-tokens for generating a token and save into key named `cf-api-token`
+- Use https://app.zerossl.com/developer to generate EAB credentials.
+  - Save the 'EAB KID' to a key named `eab-kid`.
+  - Save the 'EAB HMAC Key' to a key named `eab-hmac-key`.
 
 ## String Replacement
 - In the homelab vault, create a password type secret named `stringreplacesecret`

@@ -107,6 +107,7 @@ spec:
           rbac:
             policy.csv: |
               g, ArgoCD Admin, role:admin
+              g, <path:sso#sso-org>:admins, role:admin
         repoServer:
           rbac:
             - apiGroups: [""]

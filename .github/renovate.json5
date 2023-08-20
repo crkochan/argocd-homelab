@@ -5,13 +5,13 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["argocd"],
+      "matchManagers": ["argocd", "kubernetes"],
       "matchUpdateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
-      "groupName": "argocd non-major updates",
+      "groupName": "non-major updates",
       "automerge": true
     },
     {
-      "matchManagers": ["argocd"],
+      "matchManagers": ["argocd", "kubernetes"],
       "matchUpdateTypes": ["major"]
     }
   ],

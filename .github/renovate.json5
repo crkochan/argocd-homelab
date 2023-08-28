@@ -6,7 +6,8 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
-      "automerge": true
+      "automerge": true,
+      "ignoreTests": true
     }
   ],
   "prHourlyLimit": 3,

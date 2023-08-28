@@ -69,7 +69,7 @@ spec:
     privateKeySecretRef:
       name: zerossl-prod
     externalAccountBinding:
-      keyID: <path:cert-mananger#eab-kid>
+      keyID: $cert-mananger:eab-kid
       keySecretRef:
         name: cert-manager
         key: eab-hmac-key

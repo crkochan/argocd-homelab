@@ -56,6 +56,36 @@ spec:
         key: cert-manager
         property: le-email
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: cf-api-token
+      remoteRef:
+        key: cert-manager
+        property: cf-api-token
+    - secretKey: eab-kid
+      remoteRef:
+        key: cert-manager
+        property: eab-kid
+    - secretKey: eab-hmac-key
+      remoteRef:
+        key: cert-manager
+        property: eab-hmac-key
+    - secretKey: le-email
+      remoteRef:
+        key: cert-manager
+        property: le-email
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:

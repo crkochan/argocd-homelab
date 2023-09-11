@@ -1,0 +1,88 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: synology-csi
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/warn: privileged
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: synology-csi-classes
+  namespace: argocd
+spec:
+  destination:
+    namespace: synology-csi
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    path: kustomize/synology-csi-talos/classes
+    repoURL: https://github.com/crkochan/argocd-homelab.git
+    targetRevision: HEAD
+    plugin:
+      name: kustomize-inline
+        env:
+          - name: KUSTOMIZATION_YAML
+            value: |
+              apiVersion: kustomize.config.k8s.io/v1beta1
+              kind: Kustomization
+              resources:
+                - storage-class.yaml
+                - volume-snapshot-class.yaml
+              patches:
+                - target:
+                    kind: StorageClass
+                    name: synology-iscsi
+                  patch: |-
+                    - op: add
+                      path: /parameters/dsm
+                      value: <path:stringreplacesecret#dsmip>
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: synology-csi
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  destination:
+    namespace: synology-csi
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    path: kustomize/synology-csi-talos/base
+    repoURL: https://github.com/crkochan/argocd-homelab.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: client-info-secret
+  namespace: synology-csi
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: client-info.yml
+      remoteRef:
+        key: synology-csi
+        property: client-info.yml

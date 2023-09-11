@@ -55,6 +55,10 @@ spec:
       remoteRef:
         key: stringreplacesecret
         property: metallbpooladdress
+    - secretKey: dsmip
+      remoteRef:
+        key: stringreplacesecret
+        property: dsmip
 ---
 apiVersion: v1
 kind: ConfigMap

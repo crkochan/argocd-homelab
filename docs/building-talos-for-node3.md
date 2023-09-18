@@ -42,12 +42,6 @@ Compile the kernel, adjusting the `TAG` if needed, based on the value of the `PK
 
 Clone: [https://github.com/u-boot/u-boot](https://github.com/u-boot/u-boot), checkout `next` branch. At the moment, the `next` branch has the necessary patches to allow u-boot to function on node 3.
 
-If compiling on macOS running on Apple Silicon with native ARM Homebrew, OpenSSL libraries will need to be symlinked into the x86 location. Adjust appropriately if OpenSSL version and location differs.
-
-```
-ln -s /opt/homebrew/opt/openssl@1.1/include/openssl/ /usr/local/include/openssl
-export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/Cellar/openssl@1.1/1.1.1w/lib
-```
 Create [a Dockerfile](u-boot/Dockerfile) that will be used to package the compiled u-boot.
 
 ```
@@ -65,7 +59,13 @@ Run the following to generate and edit a config, and compile u-boot. Note: If on
 ```
 make -j $(nproc) clean rpi_arm64_defconfig
 sed -i "s/CONFIG_TOOLS_LIBCRYPTO=y/# CONFIG_TOOLS_LIBCRYPTO is not set/" .config
-make -j $(nproc) HOSTLDLIBS_mkimage="-lssl -lcrypto"
+CROSS_COMPILE=aarch64-linux-gnu- make -j $(nproc) HOSTLDLIBS_mkimage="-lssl -lcrypto"
+```
+
+If compiling on macOS running on Apple Silicon with native ARM Homebrew, additional parameters may be required so that the build process can find the required OpenSSL libraries. If the previous `make` command resulted in an error, try the following.
+
+```
+HOSTLDFLAGS="-L$(brew --prefix openssl)/lib" HOSTCFLAGS="-I$(brew --prefix openssl)/include" CROSS_COMPILE=aarch64-linux-gnu- gmake -j $(nproc) HOSTLDLIBS_mkimage="-lssl -lcrypto"
 ```
 
 Package the compiled u-boot binary in to a container image that will be used by the Talos build process.

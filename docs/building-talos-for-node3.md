@@ -96,7 +96,7 @@ Replace it with...
 
 Additionally, if you don't want your images to have a `dirty` tag appended to their version string, edit the `Makefile` to remove the `--dirty` flag from the `SHA` and `TAG` values.
 
-First, produce the custom installer. If the operation that is being performed is an in-place upgrade on an existing cluster, this is the only step required, although the image may need to be pushed to a publicly accessing registry such as ghcr.io.
+First, produce the custom installer. If the operation that is being performed is an in-place upgrade on an existing cluster, this is the only step required, although the image will need to be pushed to a registry accessible from your existing cluster.
 
 `make -j$(nproc) installer IMAGE_REGISTRY=127.0.0.1:5005 PLATFORM=linux/amd64,linux/arm64 PUSH=true`
 

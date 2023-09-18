@@ -1,6 +1,6 @@
 # Building a Talos image for Turing Pi 2 node 3
 
-When compiling on macOS, use Homebrew to install GNU make. For any `make` command in the following instructions, substitute the aliases command `gmake` instead. When compiling u-boot, some additional cross compiling tools are needed.
+When compiling on macOS, use Homebrew to install GNU make. For any `make` command in the following instructions, substitute the aliased command `gmake` instead. When compiling u-boot, some additional cross compiling tools are needed.
 
 ```
 brew tap messense/macos-cross-toolchains

@@ -38,6 +38,10 @@ spec:
     name: 1password
   target:
     creationPolicy: Owner
+    template:
+      metadata:
+        annotations:
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
   data:
     - secretKey: cf-api-token
       remoteRef:

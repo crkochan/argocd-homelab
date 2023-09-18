@@ -42,7 +42,7 @@ spec:
       metadata:
         annotations:
           reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-          reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "cert-mananger"
+          reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "cert-manager"
   data:
     - secretKey: cf-api-token
       remoteRef:

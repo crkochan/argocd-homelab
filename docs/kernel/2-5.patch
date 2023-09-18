@@ -1,0 +1,119 @@
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index edf283e2b5dd..d30636a725d7 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -48,10 +48,17 @@
+ #define PCIE_RC_CFG_PRIV1_LINK_CAPABILITY			0x04dc
+ #define  PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK	0xc00
+ 
++#define PCIE_RC_CFG_PRIV1_ROOT_CAP			0x4f8
++#define  PCIE_RC_CFG_PRIV1_ROOT_CAP_L1SS_MODE_MASK	0xf8
++
+ #define PCIE_RC_DL_MDIO_ADDR				0x1100
+ #define PCIE_RC_DL_MDIO_WR_DATA				0x1104
+ #define PCIE_RC_DL_MDIO_RD_DATA				0x1108
+ 
++#define PCIE_0_RC_PL_PHY_DBG_CLKREQ2_0			0x1e30
++#define  CLKREQ2_0_CLKREQ_IN_CNT_MASK			0x3f000000
++#define  CLKREQ2_0_CLKREQ_IN_MASK			0x40000000
++
+ #define PCIE_MISC_MISC_CTRL				0x4008
+ #define  PCIE_MISC_MISC_CTRL_PCIE_RCB_64B_MODE_MASK	0x80
+ #define  PCIE_MISC_MISC_CTRL_PCIE_RCB_MPS_MODE_MASK	0x400
+@@ -121,9 +128,12 @@
+ 
+ #define PCIE_MISC_HARD_PCIE_HARD_DEBUG					0x4204
+ #define  PCIE_MISC_HARD_PCIE_HARD_DEBUG_CLKREQ_DEBUG_ENABLE_MASK	0x2
++#define  PCIE_MISC_HARD_PCIE_HARD_DEBUG_L1SS_ENABLE_MASK		0x200000
+ #define  PCIE_MISC_HARD_PCIE_HARD_DEBUG_SERDES_IDDQ_MASK		0x08000000
+ #define  PCIE_BMIPS_MISC_HARD_PCIE_HARD_DEBUG_SERDES_IDDQ_MASK		0x00800000
+-
++#define  PCIE_CLKREQ_MASK \
++	  (PCIE_MISC_HARD_PCIE_HARD_DEBUG_CLKREQ_DEBUG_ENABLE_MASK | \
++	   PCIE_MISC_HARD_PCIE_HARD_DEBUG_L1SS_ENABLE_MASK)
+ 
+ #define PCIE_INTR2_CPU_BASE		0x4300
+ #define PCIE_MSI_INTR2_BASE		0x4500
+@@ -1024,13 +1034,58 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
+ 	return 0;
+ }
+ 
++static void brcm_config_clkreq(struct brcm_pcie *pcie)
++{
++	bool l1ss = of_property_read_bool(pcie->np, "brcm,enable-l1ss");
++	void __iomem *base = pcie->base;
++	u32 clkreq_set, tmp = readl(base + PCIE_0_RC_PL_PHY_DBG_CLKREQ2_0);
++	bool clkreq_in_seen;
++
++	/*
++	 * We have "seen" CLKREQ# if it is asserted or has been in the past.
++	 * Note that the CLKREQ_IN_MASK is 1 if CLKREQ# is asserted.
++	 */
++	clkreq_in_seen = !!(tmp & CLKREQ2_0_CLKREQ_IN_MASK) ||
++		!!FIELD_GET(CLKREQ2_0_CLKREQ_IN_CNT_MASK, tmp);
++
++	/* Start with safest setting where we provide refclk regardless */
++	clkreq_set = readl(pcie->base + PCIE_MISC_HARD_PCIE_HARD_DEBUG) &
++		~PCIE_CLKREQ_MASK;
++
++	if (l1ss && IS_ENABLED(CONFIG_PCIEASPM)) {
++		/*
++		 * Note: For boards using a mini-card connector, this mode
++		 * (L1SS CLKREQ# mode) may not meet the TCRLon maximum time
++		 * of 400ns, as specified in 3.2.5.2.2 of the PCI Express
++		 * Mini CEM 2.0 specification.
++		 */
++		clkreq_set |= PCIE_MISC_HARD_PCIE_HARD_DEBUG_L1SS_ENABLE_MASK;
++		dev_info(pcie->dev, "bi-dir CLKREQ# for L1SS power savings");
++	} else {
++		if (clkreq_in_seen && IS_ENABLED(CONFIG_PCIEASPM)) {
++			clkreq_set |= PCIE_MISC_HARD_PCIE_HARD_DEBUG_CLKREQ_DEBUG_ENABLE_MASK;
++			dev_info(pcie->dev, "uni-dir CLKREQ# for L0s, L1 ASPM\n");
++		} else {
++			dev_info(pcie->dev, "CLKREQ# ignored; no ASPM\n");
++			/* Might as well unadvertise ASPM */
++			tmp = readl(base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY) &
++				~PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK;
++			writel(tmp, base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
++		}
++		/* Setting the field to 2 unadvertises L1SS support */
++		tmp = readl(base + PCIE_RC_CFG_PRIV1_ROOT_CAP);
++		u32p_replace_bits(&tmp, 2, PCIE_RC_CFG_PRIV1_ROOT_CAP_L1SS_MODE_MASK);
++		writel(tmp, base + PCIE_RC_CFG_PRIV1_ROOT_CAP);
++	}
++	writel(clkreq_set, pcie->base + PCIE_MISC_HARD_PCIE_HARD_DEBUG);
++}
++
+ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
+ {
+ 	struct device *dev = pcie->dev;
+ 	void __iomem *base = pcie->base;
+ 	u16 nlw, cls, lnksta;
+ 	bool ssc_good = false;
+-	u32 tmp;
+ 	int ret, i;
+ 
+ 	/* Unassert the fundamental reset */
+@@ -1055,6 +1110,8 @@ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
+ 		return -ENODEV;
+ 	}
+ 
++	brcm_config_clkreq(pcie);
++
+ 	if (pcie->gen)
+ 		brcm_pcie_set_gen(pcie, pcie->gen);
+ 
+@@ -1073,14 +1130,6 @@ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
+ 		 pci_speed_string(pcie_link_speed[cls]), nlw,
+ 		 ssc_good ? "(SSC)" : "(!SSC)");
+ 
+-	/*
+-	 * Refclk from RC should be gated with CLKREQ# input when ASPM L0s,L1
+-	 * is enabled => setting the CLKREQ_DEBUG_ENABLE field to 1.
+-	 */
+-	tmp = readl(base + PCIE_MISC_HARD_PCIE_HARD_DEBUG);
+-	tmp |= PCIE_MISC_HARD_PCIE_HARD_DEBUG_CLKREQ_DEBUG_ENABLE_MASK;
+-	writel(tmp, base + PCIE_MISC_HARD_PCIE_HARD_DEBUG);
+-
+ 	return 0;
+ }

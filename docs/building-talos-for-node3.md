@@ -60,7 +60,7 @@ If a container image has already been produced, delete it.
 
 `docker rmi 127.0.0.1:5005/ubootbash:latest || true`
 
-Run the following to generate and edit a config, and compile u-boot.
+Run the following to generate and edit a config, and compile u-boot. Note: If on macOS, use the GNU sed alias `gsed` instead.
 
 ```
 make -j $(nproc) clean rpi_arm64_defconfig

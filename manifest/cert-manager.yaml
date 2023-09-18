@@ -67,7 +67,6 @@ metadata:
  name: cert-manager
  annotations:
    reflector.v1.k8s.emberstack.com/reflects: "argocd/cert-manager"
-data: {}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer

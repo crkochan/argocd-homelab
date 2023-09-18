@@ -60,10 +60,6 @@ spec:
       remoteRef:
         key: cert-manager
         property: le-email
-    - secretKey: foo-email
-      remoteRef:
-        key: cert-manager
-        property: le-email
 ---
 apiVersion: v1
 kind: Secret

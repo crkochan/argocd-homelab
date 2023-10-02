@@ -2,6 +2,8 @@ kind: Namespace
 apiVersion: v1
 metadata:
   name: ingress-nginx
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -9,7 +11,7 @@ metadata:
   name: ingress-nginx
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     namespace: ingress-nginx
@@ -41,6 +43,8 @@ kind: Certificate
 metadata:
   name: default-wildcard
   namespace: ingress-nginx
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   secretName: default-wildcard
   issuerRef:

@@ -37,6 +37,41 @@ spec:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      metadata:
+        annotations:
+          reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+          reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "cert-manager"
+  data:
+    - secretKey: cf-api-token
+      remoteRef:
+        key: cert-manager
+        property: cf-api-token
+    - secretKey: eab-kid
+      remoteRef:
+        key: cert-manager
+        property: eab-kid
+    - secretKey: eab-hmac-key
+      remoteRef:
+        key: cert-manager
+        property: eab-hmac-key
+    - secretKey: le-email
+      remoteRef:
+        key: cert-manager
+        property: le-email
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
   name: stringreplacesecret
   namespace: argocd
 spec:

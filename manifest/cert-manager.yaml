@@ -40,6 +40,7 @@ metadata:
   namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   acme:
     server: https://acme.zerossl.com/v2/DV90
@@ -65,6 +66,7 @@ metadata:
   namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
@@ -84,6 +86,7 @@ metadata:
   namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory

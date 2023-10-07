@@ -7,3 +7,4 @@
 inactive
 
 secrets.yaml
+.sops.yaml

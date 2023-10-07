@@ -47,10 +47,10 @@ spec:
         targetRevision: HEAD
       destination:
         server: "https://kubernetes.default.svc"
-        namespace: '{{ trimSuffix (ext ".yaml") (base .path.filename) }}'
+        # namespace: '{{ trimSuffix (ext ".yaml") (base .path.filename) }}'
       syncPolicy:
         syncOptions:
-          - CreateNamespace=true
+          - CreateNamespace=false
         automated:
           prune: true
           selfHeal: true

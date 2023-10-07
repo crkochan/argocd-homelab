@@ -1,0 +1,124 @@
+---
+clusterName: ${clusterName}
+talosVersion: v1.5.2
+talosImageURL: ${talosImageURL}
+kubernetesVersion: v1.28.1
+endpoint: https://${clusterVIP}:6443
+domain: cluster.local
+allowSchedulingOnMasters: true
+
+additionalMachineCertSans:
+  - ${node1IP}
+  - ${node1Name}.${domainName}
+  - ${node2IP}
+  - ${node2Name}.${domainName}
+  - ${node3IP}
+  - ${node3Name}.${domainName}
+  - ${node4IP}
+  - ${node4Name}.${domainName}
+
+additionalApiServerCertSans:
+  - ${clusterName}.${domainName}
+  - ${node1IP}
+  - ${node1Name}.${domainName}
+  - ${node2IP}
+  - ${node2Name}.${domainName}
+  - ${node3IP}
+  - ${node3Name}.${domainName}
+  - ${node4IP}
+  - ${node4Name}.${domainName}
+
+patches:
+  - |-
+    machine:
+      files:
+        - path: /var/etc/nut/upsmon.conf
+          op: create
+          permissions: 0o600
+          content: |-
+            MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
+            SHUTDOWNCMD "/sbin/poweroff"
+      kubelet:
+        extraArgs:
+          rotate-server-certificates: true
+      features:
+        kubePrism:
+          enabled: true
+          port: 7445
+    cluster:
+      discovery:
+        registries:
+            kubernetes:
+                disabled: false
+            service:
+              disabled: true
+
+nodes:
+  - hostname: ${node1Name}.${domainName}
+    ipAddress: ${node1IP}
+    extensions:
+      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
+      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    installDisk: /dev/mmcblk0
+    controlPlane: true
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node1Interface}
+        addresses:
+          - ${node1IP}/23
+        vip:
+          ip: ${clusterVIP}
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+  - hostname: ${node2Name}.${domainName}
+    ipAddress: ${node2IP}
+    extensions:
+      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
+      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    installDisk: /dev/mmcblk0
+    controlPlane: true
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node2Interface}
+        addresses:
+          - ${node2IP}/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+  - hostname: ${node3Name}.${domainName}
+    ipAddress: ${node3IP}
+    extensions:
+      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
+      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    installDisk: /dev/mmcblk0
+    controlPlane: true
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node3Interface}
+        addresses:
+          - ${node3IP}/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+  - hostname: ${node4Name}.${domainName}
+    ipAddress: ${node4IP}
+    extensions:
+      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
+      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    installDisk: /dev/mmcblk0
+    controlPlane: false
+    nodeLabels:
+      kubernetes.io/role: worker
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node4Interface}
+        addresses:
+          - ${node4IP}/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}

@@ -14,7 +14,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: synology-csi
+    namespace: kube-system
     server: https://kubernetes.default.svc
   project: homelab
   source:

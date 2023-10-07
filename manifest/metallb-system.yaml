@@ -1,12 +1,3 @@
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: metallb-system
-  labels:
-    pod-security.kubernetes.io/enforce: privileged
-    pod-security.kubernetes.io/audit: privileged
-    pod-security.kubernetes.io/warn: privileged
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -21,11 +12,6 @@ spec:
     chart: metallb
     repoURL: https://metallb.github.io/metallb
     targetRevision: 0.13.11
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
-      selfHeal: true
   # This is a workaround for mutated CRD, where ingoreDifferences must be set
   # https://github.com/metallb/metallb/issues/1681
   ignoreDifferences:
@@ -42,6 +28,18 @@ spec:
   info:
     - name: workaround1
       value: "https://github.com/metallb/metallb/issues/1681"
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool

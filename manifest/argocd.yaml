@@ -1,11 +1,3 @@
-## Goal is to only initially deploy argocd with minimal configurations
-## Once deployed, argocd can manage itself
-## https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#manage-argo-cd-using-argo-cd
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: argocd
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -156,6 +148,8 @@ spec:
       allowEmpty: true
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

@@ -30,6 +30,7 @@ spec:
             kind: Kustomization
             resources:
               - storage-class.yaml
+              - storage-class-retain.yaml
               - volume-snapshot-class.yaml
             patches:
               - target:

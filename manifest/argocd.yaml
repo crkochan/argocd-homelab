@@ -57,6 +57,7 @@ spec:
           params:
             server.insecure: true
           cm:
+            kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
             resource.compareoptions: |
               ignoreAggregatedRoles: true
             url: "https://argocd.<path:stringreplacesecret#domain>"
@@ -74,9 +75,6 @@ spec:
             policy.csv: |
               g, ArgoCD Admin, role:admin
               g, <path:sso#sso-org>:admins, role:admin
-        server:
-          config:
-            kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
         repoServer:
           rbac:
             - apiGroups: [""]

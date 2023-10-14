@@ -47,6 +47,7 @@ spec:
             tcpSocket:
               port: http
             failureThreshold: 30
+            initialDelaySeconds: 15
             periodSeconds: 10
           volumeMounts:
             - name: tcpm-data

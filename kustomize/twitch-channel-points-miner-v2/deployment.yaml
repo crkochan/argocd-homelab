@@ -45,7 +45,6 @@ spec:
               port: http
             initialDelaySeconds: 15
             periodSeconds: 60
-              name: http
           readinessProbe:
             tcpSocket:
               port: http

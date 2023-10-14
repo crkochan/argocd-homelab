@@ -52,6 +52,8 @@ spec:
           volumeMounts:
             - name: tcpm-data
               mountPath: /usr/src/app
+      strategy:
+         type: Recreate
       volumes:
         - name: tcpm-data
           persistentVolumeClaim:

@@ -38,6 +38,16 @@ spec:
           ports:
             - containerPort: 5000
               name: http
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 60
+          startupProbe:
+            tcpSocket:
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
           volumeMounts:
             - name: tcpm-data
               mountPath: /usr/src/app

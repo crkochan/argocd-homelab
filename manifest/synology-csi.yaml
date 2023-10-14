@@ -40,6 +40,13 @@ spec:
                   - op: add
                     path: /parameters/dsm
                     value: <path:stringreplacesecret#dsmip>
+              - target:
+                  kind: StorageClass
+                  name: synology-iscsi-retain
+                patch: |-
+                  - op: add
+                    path: /parameters/dsm
+                    value: <path:stringreplacesecret#dsmip>
   syncPolicy:
     automated:
       allowEmpty: true

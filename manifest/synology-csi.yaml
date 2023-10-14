@@ -30,11 +30,19 @@ spec:
             kind: Kustomization
             resources:
               - storage-class.yaml
+              - storage-class-retain.yaml
               - volume-snapshot-class.yaml
             patches:
               - target:
                   kind: StorageClass
                   name: synology-iscsi
+                patch: |-
+                  - op: add
+                    path: /parameters/dsm
+                    value: <path:stringreplacesecret#dsmip>
+              - target:
+                  kind: StorageClass
+                  name: synology-iscsi-retain
                 patch: |-
                   - op: add
                     path: /parameters/dsm

@@ -9,6 +9,8 @@ spec:
   selector:
     matchLabels:
       app: tcpm
+  strategy:
+     type: Recreate
   template:
     metadata:
       labels:
@@ -52,8 +54,6 @@ spec:
           volumeMounts:
             - name: tcpm-data
               mountPath: /usr/src/app
-      strategy:
-         type: Recreate
       volumes:
         - name: tcpm-data
           persistentVolumeClaim:

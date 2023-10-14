@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tcpm
+  namespace: argocd
+spec:
+  destination:
+    namespace: tcpm
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    path: kustomize/twitch-channel-points-miner-v2
+    repoURL: https://github.com/crkochan/argocd-homelab.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tcpm
+  labels:
+    app: tcpm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tcpm
+  template:
+    metadata:
+      labels:
+        app: tcpm
+    spec:
+      initContainers:
+        - name: sync-tcpm-to-vol
+          image: rdavidoff/twitch-channel-points-miner-v2
+          command: 
+            - /bin/bash
+            - '-c'
+            - |
+              set -e -o pipefail
+              apt update && apt install -y rsync
+              rsync -avh --delete /usr/src/app/TwitchChannelPointsMiner /data
+              cp -f /usr/src/app/requirements.txt /data
+              cp -f /secrets/run.py /data
+          volumeMounts:
+            - name: tcpm-data
+              mountPath: /data
+            - name: tcpm-secrets
+              mountPath: /secrets/run.py
+              subPath: run.py
+      containers:
+        - name: twitch-channel-points-miner-v2
+          image: rdavidoff/twitch-channel-points-miner-v2
+          ports:
+            - containerPort: 5000
+              name: http
+          volumeMounts:
+            - name: tcpm-data
+              mountPath: /usr/src/app
+      volumes:
+        - name: tcpm-data
+          persistentVolumeClaim:
+            claimName: tcpm-data-vol
+        - name: tcpm-secrets
+          secret:
+            secretName: tcpm-secrets

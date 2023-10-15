@@ -4,6 +4,8 @@ metadata:
   name: tcpm
   labels:
     app: tcpm
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:

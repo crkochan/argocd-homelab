@@ -33,7 +33,7 @@ spec:
           volumeMounts:
             - name: tcpm-data
               mountPath: /data
-            - name: tcpm-secrets
+            - name: tcpm-secret
               mountPath: /secrets/run.py
               subPath: run.py
       containers:
@@ -65,6 +65,6 @@ spec:
         - name: tcpm-data
           persistentVolumeClaim:
             claimName: tcpm-data-vol
-        - name: tcpm-secrets
+        - name: tcpm-secret
           secret:
-            secretName: tcpm-secrets
+            secretName: tcpm-secret

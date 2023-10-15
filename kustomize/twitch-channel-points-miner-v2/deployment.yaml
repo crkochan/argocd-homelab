@@ -28,8 +28,8 @@ spec:
               set -e -o pipefail
               apt update && apt install -y rsync
               rsync -avh --delete /usr/src/app/TwitchChannelPointsMiner /data
-              cp -f /usr/src/app/requirements.txt /data
-              cp -f /secrets/run.py /data
+              cp -fv /usr/src/app/requirements.txt /data
+              cp -fv /secrets/run.py /data
           volumeMounts:
             - name: tcpm-data
               mountPath: /data

@@ -67,8 +67,8 @@ homelab                        # vault used for containing secrets
 
 ## String Replacement
 - In the homelab vault, create a password type secret named `stringreplacesecret`
-- Save your domain mydomain.com into a key named `domain`. 
-- Save your static ip address range for MetalLB 192.168.1.x-192.168.1.x into a key named `metallbpooladdress`. 
+- Save your domain mydomain.com into a key named `domain`.
+- Save your static ip address range for MetalLB 192.168.1.x-192.168.1.x into a key named `metallbpooladdress`.
 
 # Setup
 

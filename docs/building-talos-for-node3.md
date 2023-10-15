@@ -34,7 +34,7 @@ Add [2-5.patch](kernel/2-5.patch) to the above dir
 Edit kernel/prepare/pkg.yaml, add patch line just above `make mrproper`
 `patch -p1 < /pkg/patches/2-5.patch`
 
-Compile the kernel, adjusting the `TAG` if needed, based on the value of the `PKGS` value in the Makefile of the talos repo. 
+Compile the kernel, adjusting the `TAG` if needed, based on the value of the `PKGS` value in the Makefile of the talos repo.
 
 `make -j$(nproc) kernel PLATFORM=linux/arm64 TAG=v1.5.0-9-g7f9d6eb REGISTRY=127.0.0.1:5005 USERNAME=siderolabs PUSH=true`
 
@@ -74,7 +74,7 @@ Package the compiled u-boot binary in to a container image that will be used by 
 
 ### Make a custom Talos installer, imager, and a rPi image file
 
-Clone [https://github.com/siderolabs/talos](https://github.com/siderolabs/talos), checkout latest release (v1.5.2). 
+Clone [https://github.com/siderolabs/talos](https://github.com/siderolabs/talos), checkout latest release (v1.5.2).
 
 The Dockerfile in the repo needs to be modified to pull from the local container registry for the custom kernel and u-boot containers.
 

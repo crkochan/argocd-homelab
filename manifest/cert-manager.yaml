@@ -26,10 +26,10 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
- name: cert-manager
- namespace: cert-manager
- annotations:
-   reflector.v1.k8s.emberstack.com/reflects: "argocd/cert-manager"
+  name: cert-manager
+  namespace: cert-manager
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflects: "argocd/cert-manager"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -51,11 +51,11 @@ spec:
         key: eab-hmac-key
       keyAlgorithm: HS256
     solvers:
-    - dns01:
-        cloudflare:
-          apiTokenSecretRef:
-            name: cert-manager
-            key: cf-api-token
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cert-manager
+              key: cf-api-token
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -71,11 +71,11 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
-    - dns01:
-        cloudflare:
-          apiTokenSecretRef:
-            name: cert-manager
-            key: cf-api-token
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cert-manager
+              key: cf-api-token
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -91,8 +91,8 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
-    - dns01:
-        cloudflare:
-          apiTokenSecretRef:
-            name: cert-manager
-            key: cf-api-token
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cert-manager
+              key: cf-api-token

@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: tcpm
   strategy:
-     type: Recreate
+    type: Recreate
   template:
     metadata:
       labels:
@@ -19,7 +19,7 @@ spec:
       initContainers:
         - name: sync-tcpm-to-vol
           image: rdavidoff/twitch-channel-points-miner-v2
-          command: 
+          command:
             - /bin/bash
             - '-c'
             - |

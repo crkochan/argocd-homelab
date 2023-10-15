@@ -187,10 +187,13 @@ metadata:
   name: argocd-http
   namespace: argocd
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
     nginx.ingress.kubernetes.io/backend-protocol: http
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - argocd.<path:stringreplacesecret#domain>
   rules:
     - host: argocd.<path:stringreplacesecret#domain>
       http:
@@ -202,9 +205,6 @@ spec:
                 name: argocd-server
                 port:
                   name: http
-  tls:
-  - hosts:
-    - argocd.<path:stringreplacesecret#domain>
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -212,9 +212,12 @@ metadata:
   name: argocd-grpc
   namespace: argocd
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: grpc
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - argocd.<path:stringreplacesecret#domain>
   rules:
     - host: argocd.<path:stringreplacesecret#domain>
       http:
@@ -226,6 +229,3 @@ spec:
                 name: argocd-server
                 port:
                   name: http
-  tls:
-  - hosts:
-    - argocd.<path:stringreplacesecret#domain>

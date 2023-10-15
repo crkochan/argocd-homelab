@@ -19,3 +19,28 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tcpm-http
+  namespace: tcpm
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: http
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tcpm.<path:stringreplacesecret#domain>
+  rules:
+    - host: tcpm.<path:stringreplacesecret#domain>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tcpm
+                port:
+                  name: http

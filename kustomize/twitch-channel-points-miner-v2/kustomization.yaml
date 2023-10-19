@@ -9,4 +9,4 @@ generators:
   - ksops-generator.yaml
 images:
   - name: rdavidoff/twitch-channel-points-miner-v2
-    newTag: 1.8.6
+    newTag: 1.8.8

@@ -11,7 +11,7 @@ spec:
   source:
     chart: eraser
     repoURL: https://eraser-dev.github.io/eraser/charts
-    targetRevision: 1.2.1
+    targetRevision: 1.2.3
   syncPolicy:
     automated:
       allowEmpty: true

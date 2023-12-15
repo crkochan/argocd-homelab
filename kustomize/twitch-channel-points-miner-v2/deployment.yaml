@@ -30,6 +30,7 @@ spec:
               rsync -avh --delete /usr/src/app/TwitchChannelPointsMiner /data
               cp -fv /usr/src/app/requirements.txt /data
               cp -fv /secrets/run.py /data
+              rm -rf /data/assets
           volumeMounts:
             - name: tcpm-data
               mountPath: /data

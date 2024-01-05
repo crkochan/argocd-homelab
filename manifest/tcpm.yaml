@@ -58,12 +58,12 @@ spec:
     - hosts:
         - tcpm
   rules:
-  - http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: tcpm
-            port:
-              name: http
+    - http:
+        paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: tcpm
+              port:
+                name: http

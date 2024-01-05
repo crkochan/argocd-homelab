@@ -10,20 +10,3 @@ spec:
       protocol: TCP
       port: 80
       targetPort: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: tcpm-tailscale
-  annotations:
-    tailscale.com/hostname: tcpm
-spec:
-  type: LoadBalancer
-  loadBalancerClass: tailscale
-  selector:
-    app: tcpm
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: http

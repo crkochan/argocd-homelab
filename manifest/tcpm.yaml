@@ -50,6 +50,8 @@ kind: Ingress
 metadata:
   name: tcpm-tailscale
   namespace: tcpm
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
 spec:
   ingressClassName: tailscale
   tls:

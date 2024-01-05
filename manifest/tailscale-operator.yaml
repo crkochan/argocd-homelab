@@ -36,7 +36,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
-    namespace: tailscale-operator
+    namespace: tailscale
     server: https://kubernetes.default.svc
   project: homelab
   source:

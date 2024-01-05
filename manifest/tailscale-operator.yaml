@@ -1,0 +1,54 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tailscale
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: operator-oauth
+  namespace: tailscale
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: client_id
+      remoteRef:
+        key: tailscale-operator
+        property: client-id
+    - secretKey: client_secret
+      remoteRef:
+        key: tailscale-operator
+        property: client-secret
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tailscale-operator
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  destination:
+    namespace: tailscale-operator
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: tailscale-operator
+    repoURL: https://pkgs.tailscale.com/helmcharts
+    targetRevision: 1.56.1
+    helm:
+      values: |
+        apiServerProxyConfig:
+              mode: "true"
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true

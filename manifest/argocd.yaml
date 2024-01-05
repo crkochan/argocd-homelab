@@ -229,3 +229,26 @@ spec:
                 name: argocd-server
                 port:
                   name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-tailscale
+  namespace: argocd
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - argocd
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  name: http

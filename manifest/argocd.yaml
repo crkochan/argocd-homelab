@@ -61,16 +61,16 @@ spec:
             resource.compareoptions: |
               ignoreAggregatedRoles: true
             url: "https://argocd.<path:stringreplacesecret#domain>"
-            dex.config: |
-              connectors:
-                - type: github
-                  name: GitHub
-                  id: github
-                  config:
-                    clientID: <path:sso#sso-client-id>
-                    clientSecret: <path:sso#sso-client-secret>
-                    orgs:
-                    - name: <path:sso#sso-org>
+            # dex.config: |
+            #   connectors:
+            #     - type: github
+            #       name: GitHub
+            #       id: github
+            #       config:
+            #         clientID: <path:sso#sso-client-id>
+            #         clientSecret: <path:sso#sso-client-secret>
+            #         orgs:
+            #         - name: <path:sso#sso-org>
           rbac:
             policy.csv: |
               g, ArgoCD Admin, role:admin

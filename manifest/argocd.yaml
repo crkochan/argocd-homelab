@@ -57,6 +57,7 @@ spec:
           params:
             server.insecure: true
           cm:
+            accounts.<path:argo-users#user1>: apiKey, login
             kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
             resource.compareoptions: |
               ignoreAggregatedRoles: true
@@ -75,6 +76,7 @@ spec:
             policy.csv: |
               g, ArgoCD Admin, role:admin
               g, <path:sso#sso-org>:admins, role:admin
+              g, <path:argo-users#user1>, role:admin
         repoServer:
           rbac:
             - apiGroups: [""]

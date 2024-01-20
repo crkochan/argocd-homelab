@@ -56,9 +56,12 @@ patches:
 nodes:
   - hostname: ${node1Name}.${domainName}
     ipAddress: ${node1IP}
-    extensions:
-      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
-      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
     controlPlane: true
     nameservers:
@@ -74,9 +77,12 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node2Name}.${domainName}
     ipAddress: ${node2IP}
-    extensions:
-      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
-      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
     controlPlane: true
     nameservers:
@@ -90,9 +96,12 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node3Name}.${domainName}
     ipAddress: ${node3IP}
-    extensions:
-      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
-      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
     controlPlane: true
     nameservers:
@@ -106,9 +115,12 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node4Name}.${domainName}
     ipAddress: ${node4IP}
-    extensions:
-      - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4@sha256:3ab305068aa28513b26ab3c5b1f2937dbe3f63b9c50abe290287cc58eb454bb9
-      - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.2@sha256:0ba98ed9bd6e79ee11806b66347b7a9447a837ef081c2db763759a7a7e7f259e
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
     controlPlane: false
     nodeLabels:

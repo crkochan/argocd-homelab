@@ -50,13 +50,14 @@ spec:
   source:
     chart: argo-cd
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 5.52.0
+    targetRevision: 5.53.2
     helm:
       values: |
         configs:
           params:
             server.insecure: true
           cm:
+            accounts.<path:argo-users#user1>: apiKey, login
             kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
             resource.compareoptions: |
               ignoreAggregatedRoles: true
@@ -75,6 +76,7 @@ spec:
             policy.csv: |
               g, ArgoCD Admin, role:admin
               g, <path:sso#sso-org>:admins, role:admin
+              g, <path:argo-users#user1>, role:admin
         repoServer:
           rbac:
             - apiGroups: [""]
@@ -221,6 +223,29 @@ spec:
   rules:
     - host: argocd.<path:stringreplacesecret#domain>
       http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-tailscale
+  namespace: argocd
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - argocd
+  rules:
+    - http:
         paths:
           - path: /
             pathType: Prefix

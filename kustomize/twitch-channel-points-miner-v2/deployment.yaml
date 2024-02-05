@@ -44,12 +44,14 @@ spec:
             - containerPort: 5000
               name: http
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /
               port: http
             initialDelaySeconds: 15
             periodSeconds: 60
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /
               port: http
             initialDelaySeconds: 15
             periodSeconds: 60

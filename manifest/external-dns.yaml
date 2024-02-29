@@ -58,6 +58,8 @@ spec:
               secretKeyRef:
                 name: external-dns
                 key: pihole-password
+          - name: EXTERNAL_DNS_PIHOLE_TLS_SKIP_VERIFY
+            value: 'true'
         fullnameOverride: external-dns
         logLevel: info
         policy: upsert-only

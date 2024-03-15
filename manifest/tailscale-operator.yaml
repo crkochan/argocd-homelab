@@ -46,7 +46,7 @@ spec:
   source:
     chart: tailscale-operator
     repoURL: https://pkgs.tailscale.com/helmcharts
-    targetRevision: 1.61.11
+    targetRevision: 1.62.0
     helm:
       values: |
         apiServerProxyConfig:

@@ -9,4 +9,3 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: synology-iscsi-retain
-  volumeName: pvc-9c6f112d-91d3-4b8d-9f6f-352862b9bfba

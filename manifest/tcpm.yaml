@@ -16,7 +16,7 @@ spec:
     automated:
       allowEmpty: true
       prune: true
-      selfHeal: true
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
 ---
@@ -60,10 +60,10 @@ spec:
   rules:
     - http:
         paths:
-        - pathType: Prefix
-          path: /
-          backend:
-            service:
-              name: tcpm
-              port:
-                name: http
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: tcpm
+                port:
+                  name: http

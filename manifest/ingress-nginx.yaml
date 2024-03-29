@@ -9,7 +9,7 @@ metadata:
   name: ingress-nginx
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   destination:
     namespace: ingress-nginx

@@ -12,6 +12,8 @@ kind: Application
 metadata:
   name: synology-csi-classes
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     namespace: kube-system

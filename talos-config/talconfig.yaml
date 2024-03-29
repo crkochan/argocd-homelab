@@ -1,8 +1,8 @@
 ---
 clusterName: ${clusterName}
-talosVersion: v1.5.2
+talosVersion: v1.6.7
 talosImageURL: ${talosImageURL}
-kubernetesVersion: v1.28.1
+kubernetesVersion: v1.29.3
 endpoint: https://${clusterVIP}:6443
 domain: cluster.local
 allowSchedulingOnMasters: true
@@ -56,15 +56,7 @@ patches:
 nodes:
   - hostname: ${node1Name}.${domainName}
     ipAddress: ${node1IP}
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
-    kernelModules:
-      - name: rockchip-cpufreq
     controlPlane: true
     nameservers:
       - ${nameServer}
@@ -79,15 +71,7 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node2Name}.${domainName}
     ipAddress: ${node2IP}
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
-    kernelModules:
-      - name: rockchip-cpufreq
     controlPlane: true
     nameservers:
       - ${nameServer}
@@ -100,15 +84,7 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node3Name}.${domainName}
     ipAddress: ${node3IP}
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
-    kernelModules:
-      - name: rockchip-cpufreq
     controlPlane: true
     nameservers:
       - ${nameServer}
@@ -121,12 +97,6 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node4Name}.${domainName}
     ipAddress: ${node4IP}
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/iscsi-tools
-            - siderolabs/nut-client
     installDisk: /dev/mmcblk0
     kernelModules:
       - name: rockchip-cpufreq
@@ -142,3 +112,25 @@ nodes:
         routes:
           - network: 0.0.0.0/0
             gateway: ${gateway}
+
+controlPlane:
+  kernelModules:
+    - name: rockchip-cpufreq
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/nut-client
+          - siderolabs/util-linux-tools
+
+worker:
+  kernelModules:
+    - name: rockchip-cpufreq
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/nut-client
+          - siderolabs/util-linux-tools

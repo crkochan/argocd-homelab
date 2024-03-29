@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pvc-9c6f112d-91d3-4b8d-9f6f-352862b9bfba
+spec:
+    accessModes:
+        - ENC[AES256_GCM,data:8/wIOj+wYU5/yAYB6Q==,iv:y2ba3+ZA0zZnaqHy0p7cQ0sPD7NTtPm4LqXtbBUezE8=,tag:8Qox8DAf17FFJ4YUiM9j+Q==,type:str]
+    capacity:
+        storage: ENC[AES256_GCM,data:ZqKU,iv:0T3ZTKAd787qbecsa3sMlrlqkUaTZ4ZienvJn+VsRLc=,tag:aNVYhw1t2d9M7uJBiGYeFg==,type:str]
+    csi:
+        driver: ENC[AES256_GCM,data:6EbtLT/CkH7qwGGmqnbkiMRv4Ek=,iv:Q6BK9TJPg/cLjTixhucYq6skzNVfS8smfl1tSJl7sFQ=,tag:RKOT+yNwJpFRRMi2EAL7DA==,type:str]
+        fsType: ENC[AES256_GCM,data:/9J0FQ==,iv:Z+Y3tjyX0az/e6LCYhCm78OsK92g44UWdnJ59z2Hqas=,tag:OOLvIPKvgC9GLscgogOenw==,type:str]
+        volumeAttributes:
+            dsm: ENC[AES256_GCM,data:q0juBM4/9ag=,iv:oNxEyetaibubpW1Eiwzg1bgU+DSf9cLe5OVuBYbISlc=,tag:RmV5O+ZIlEzklTrB8NSP0g==,type:str]
+            formatOptions: ""
+            protocol: ENC[AES256_GCM,data:ETzWX4s=,iv:Mp/078H2SHoOzQS17NowQm4N8d0N0vAPIEb3STO6XA0=,tag:bAxm8Em2LKRa9OpcBPSqRg==,type:str]
+            source: ""
+            storage.kubernetes.io/csiProvisionerIdentity: ENC[AES256_GCM,data:wEEhzhm1B353oRTTWbE6oE9NQktz0wzpyg41l6pDnk2XmmHSKsBh,iv:lAO4+qCGHBJlW0z6ZUdrOJ6J9LB226eFTSeY+XQJ98g=,tag:4WVuygOuNCbcT9+fcN/RCg==,type:str]
+        volumeHandle: ENC[AES256_GCM,data:l3ZChBpfgfrdABreAtn63cs+3kGwGSYBNRinQvmNuPJuy2ta,iv:M0r9q8DLlKA97lVZn3rwlfw9thO6pA2WHrswOuhJ0rU=,tag:cno0sTSAP87KkTgTKE8olg==,type:str]
+    persistentVolumeReclaimPolicy: ENC[AES256_GCM,data:55SkHiAz,iv:t6le5EQa0bt4VkF3BlAZ1T4/fLlr+hiCP3PYnKPbSbc=,tag:Ok7fGYXDt8rxXnVxRbZHdw==,type:str]
+    storageClassName: ENC[AES256_GCM,data:BORgNOi7iQw02V52rNFF+Q8+rNfx,iv:pq6gstusw9Rlo0JW2n8beaXLpJ4YJJm3nAyMzzjHsIw=,tag:WRecMSaNXIb64BYQXakrmg==,type:str]
+    volumeMode: ENC[AES256_GCM,data:Wm8fIXarygP28g==,iv:iQVw+f1U349Ab2zfP1L6fJqZOOnrjzylp8X/kQjlMjo=,tag:xyVuPSe6kXQ7+cbR0JQYPQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1sxyu34lk9dn7p7g9vz7xncx0uu6vneyl2fj3yszajzc3nfscastswkwssp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBlZkwwQTZRZndjSlhMVG5D
+            dDhNcHM2OVl6ZEU3c2p1Vm9adDVnT0k0V3k4Cm1Odlc4ZENEdlhmVDV1MzcyMzNF
+            ZERVUHFueWR2OG80WVR1TFFCK0UzZjAKLS0tICtVN3FDSTNEdm5WbWs1NGgzQWw2
+            blBIMWlFQmJmOGhzc3VLanRPelBkdGsK6/mXZo4HmbHowg8gHNcAPRzhWwwXsRAp
+            mPR07VnPJX4mhHFO3pNghKk4M7GVfx7WHN21AktA8MobQrdlyAGX5A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-03-29T09:39:24Z"
+    mac: ENC[AES256_GCM,data:u01e8lYXpxofnVOP7gUUzOnjz+WyOPfAQkbn+FKbkYDuRDO/yR9Kow3FhAU0+9yWAqczG53xUdPZ3UUejWRqVihZCuWRGzkXo5GuP/V/K/y8oxwLf0fVzMAv3Z2H2DfznxEdN1FmoqOA3g1OkLoqhqLytr7vCCWneR0ZEbh3wCc=,iv:7/qUT5fTYSaSVpEogmWCIFwJhk0RCQOjuZboXbY+Ipo=,tag:OXlDipecCQ+P0AGlSNM3rg==,type:str]
+    pgp: []
+    unencrypted_regex: ^(apiVersion|metadata|kind|type)$
+    version: 3.8.1

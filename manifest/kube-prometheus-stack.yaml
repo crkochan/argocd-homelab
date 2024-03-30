@@ -16,8 +16,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "3"
 spec:
   destination:
-    server: https://kubernetes.default.svc
     namespace: monitoring
+    server: https://kubernetes.default.svc
   project: homelab
   source:
     chart: kube-prometheus-stack

@@ -24,7 +24,7 @@ spec:
           readAffinity:
             enabled: true
         monitoring:
-          enabled: true
+          enabled: false
   syncPolicy:
     automated:
       allowEmpty: true

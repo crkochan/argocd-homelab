@@ -1,8 +1,15 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cert-manager
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cert-manager
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
     namespace: cert-manager
@@ -20,8 +27,6 @@ spec:
       allowEmpty: true
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
 ---
 apiVersion: v1
 kind: Secret
@@ -38,7 +43,7 @@ metadata:
   namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   acme:
     server: https://acme.zerossl.com/v2/DV90
@@ -64,7 +69,7 @@ metadata:
   namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
@@ -84,7 +89,7 @@ metadata:
   namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory

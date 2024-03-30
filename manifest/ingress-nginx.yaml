@@ -9,7 +9,7 @@ metadata:
   name: ingress-nginx
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
     namespace: ingress-nginx
@@ -42,7 +42,7 @@ metadata:
   name: default-wildcard
   namespace: ingress-nginx
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "15"
 spec:
   secretName: default-wildcard
   issuerRef:

@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: tcpm
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "50"
 spec:
   destination:
     namespace: tcpm
@@ -26,6 +28,7 @@ metadata:
   name: tcpm-http
   namespace: tcpm
   annotations:
+    argocd.argoproj.io/sync-wave: "50"
     nginx.ingress.kubernetes.io/backend-protocol: http
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
@@ -51,6 +54,7 @@ metadata:
   name: tcpm-tailscale
   namespace: tcpm
   annotations:
+    argocd.argoproj.io/sync-wave: "50"
     external-dns.alpha.kubernetes.io/controller: none
 spec:
   ingressClassName: tailscale

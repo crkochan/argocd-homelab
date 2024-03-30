@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rook-ceph-system
+  project: homelab
+  source:
+    chart: rook-ceph
+    repoURL: https://charts.rook.io/release
+    targetRevision: v1.13.7
+    helm:
+      valuesObject:
+        currentNamespaceOnly: false
+        csi:
+          enableLiveness: true
+          serviceMonitor:
+            enabled: true
+          readAffinity:
+            enabled: true
+        monitoring:
+          enabled: true
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rook-ceph-system
+  project: homelab
+  source:
+    chart: rook-ceph-cluster
+    repoURL: https://charts.rook.io/release
+    targetRevision: v1.13.7
+    helm:
+      valuesObject:
+        operatorNamespace: rook-ceph-system
+        cephClusterSpec:
+          storage:
+            useAllDevices: false
+            deviceFilter: "^nvme0n1"
+          crashCollector:
+            disable: true
+          healthCheck:
+            daemonHealth:
+              mon:
+                disabled: false
+                interval: 45s
+        ingress:
+          dashboard:
+            ingressClassName: nginx
+            annotations:
+              nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+            host:
+              name: turing-kube-ceph.<path:stringreplacesecret#domain>
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true

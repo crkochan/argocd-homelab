@@ -28,8 +28,8 @@ spec:
   syncPolicy:
     automated:
       allowEmpty: true
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
     managedNamespaceMetadata:
@@ -78,5 +78,5 @@ spec:
   syncPolicy:
     automated:
       allowEmpty: true
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false

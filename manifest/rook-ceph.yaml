@@ -1,17 +1,8 @@
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: rook-ceph-system
-  labels:
-    pod-security.kubernetes.io/enforce: privileged
-    pod-security.kubernetes.io/audit: privileged
-    pod-security.kubernetes.io/warn: privileged
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rook-ceph-operator
-  namespace: rook-ceph-system
+  namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -39,12 +30,14 @@ spec:
       allowEmpty: true
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rook-ceph
-  namespace: rook-ceph-system
+  namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:

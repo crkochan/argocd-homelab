@@ -59,7 +59,7 @@ spec:
         operatorNamespace: rook-ceph
         cephClusterSpec:
           storage:
-            useAllDevices: true
+            useAllDevices: false
             deviceFilter: "^nvme0n1"
           crashCollector:
             disable: true

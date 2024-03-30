@@ -12,8 +12,8 @@ kind: Application
 metadata:
   name: rook-ceph-operator
   namespace: rook-ceph-system
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
+  # annotations:
+  #   argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     server: https://kubernetes.default.svc

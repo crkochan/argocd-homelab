@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
-    namespace: rook-ceph-system
+    namespace: rook-ceph
     server: https://kubernetes.default.svc
   project: homelab
   source:
@@ -32,6 +32,11 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -42,7 +47,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
-    namespace: rook-ceph-system
+    namespace: rook-ceph
     server: https://kubernetes.default.svc
   project: homelab
   source:
@@ -51,7 +56,7 @@ spec:
     targetRevision: 1.13.7
     helm:
       valuesObject:
-        operatorNamespace: rook-ceph-system
+        operatorNamespace: rook-ceph
         cephClusterSpec:
           storage:
             useAllDevices: false

@@ -12,17 +12,17 @@ kind: Application
 metadata:
   name: rook-ceph-operator
   namespace: rook-ceph-system
-  # annotations:
-  #   argocd.argoproj.io/sync-wave: "1"
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
-    server: https://kubernetes.default.svc
     namespace: rook-ceph-system
+    server: https://kubernetes.default.svc
   project: homelab
   source:
     chart: rook-ceph
     repoURL: https://charts.rook.io/release
-    targetRevision: v1.13.7
+    targetRevision: 1.13.7
     helm:
       valuesObject:
         currentNamespaceOnly: false
@@ -49,13 +49,13 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
-    server: https://kubernetes.default.svc
     namespace: rook-ceph-system
+    server: https://kubernetes.default.svc
   project: homelab
   source:
     chart: rook-ceph-cluster
     repoURL: https://charts.rook.io/release
-    targetRevision: v1.13.7
+    targetRevision: 1.13.7
     helm:
       valuesObject:
         operatorNamespace: rook-ceph-system

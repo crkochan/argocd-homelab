@@ -1,0 +1,163 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wipe-nvme1
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      name: wipe-nvme1
+    spec:
+      containers:
+      - name: wipe-nvme1
+        image: ubuntu:xenial
+        command:
+        - /bin/bash
+        - -c
+        - |
+          apt update
+          apt install -y gdisk
+          sgdisk --zap-all /dev/nvme0n1
+          dd if=/dev/zero of=/dev/nvme0n1 bs=1M count=100 oflag=direct,dsync
+          blkdiscard /dev/nvme0n1
+        securityContext:
+          privileged: true
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /dev
+          name: devices
+      nodeName: tpi2-node01
+      nodeSelector:
+        kubernetes.io/hostname: tpi2-node01
+      terminationGracePeriodSeconds: 5
+      volumes:
+      - hostPath:
+          path: /dev
+          type: ""
+        name: devices
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wipe-nvme2
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      name: wipe-nvme2
+    spec:
+      containers:
+      - name: wipe-nvme2
+        image: ubuntu:xenial
+        command:
+        - /bin/bash
+        - -c
+        - |
+          apt update
+          apt install -y gdisk
+          sgdisk --zap-all /dev/nvme0n1
+          dd if=/dev/zero of=/dev/nvme0n1 bs=1M count=100 oflag=direct,dsync
+          blkdiscard /dev/nvme0n1
+        securityContext:
+          privileged: true
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /dev
+          name: devices
+      nodeName: tpi2-node02
+      nodeSelector:
+        kubernetes.io/hostname: tpi2-node02
+      terminationGracePeriodSeconds: 5
+      volumes:
+      - hostPath:
+          path: /dev
+          type: ""
+        name: devices
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wipe-nvme3
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      name: wipe-nvme3
+    spec:
+      containers:
+      - name: wipe-nvme3
+        image: ubuntu:xenial
+        command:
+        - /bin/bash
+        - -c
+        - |
+          apt update
+          apt install -y gdisk
+          sgdisk --zap-all /dev/nvme0n1
+          dd if=/dev/zero of=/dev/nvme0n1 bs=1M count=100 oflag=direct,dsync
+          blkdiscard /dev/nvme0n1
+        securityContext:
+          privileged: true
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /dev
+          name: devices
+      nodeName: tpi2-node03
+      nodeSelector:
+        kubernetes.io/hostname: tpi2-node03
+      terminationGracePeriodSeconds: 5
+      volumes:
+      - hostPath:
+          path: /dev
+          type: ""
+        name: devices
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wipe-nvme4
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      name: wipe-nvme4
+    spec:
+      containers:
+      - name: wipe-nvme4
+        image: ubuntu:xenial
+        command:
+        - /bin/bash
+        - -c
+        - |
+          apt update
+          apt install -y gdisk
+          sgdisk --zap-all /dev/nvme0n1
+          dd if=/dev/zero of=/dev/nvme0n1 bs=1M count=100 oflag=direct,dsync
+          blkdiscard /dev/nvme0n1
+        securityContext:
+          privileged: true
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /dev
+          name: devices
+      nodeName: tpi2-node04
+      nodeSelector:
+        kubernetes.io/hostname: tpi2-node04
+      terminationGracePeriodSeconds: 5
+      volumes:
+      - hostPath:
+          path: /dev
+          type: ""
+        name: devices
+      restartPolicy: Never

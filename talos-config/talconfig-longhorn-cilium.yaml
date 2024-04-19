@@ -1,0 +1,175 @@
+---
+clusterName: ${clusterName}
+talosVersion: v1.6.7
+kubernetesVersion: v1.29.3
+endpoint: https://${clusterVIP}:6443
+domain: cluster.local
+allowSchedulingOnMasters: true
+
+additionalMachineCertSans:
+  - ${node1IP}
+  - ${node1Name}.${domainName}
+  - ${node2IP}
+  - ${node2Name}.${domainName}
+  - ${node3IP}
+  - ${node3Name}.${domainName}
+  - ${node4IP}
+  - ${node4Name}.${domainName}
+
+additionalApiServerCertSans:
+  - ${clusterName}.${domainName}
+  - ${node1IP}
+  - ${node1Name}.${domainName}
+  - ${node2IP}
+  - ${node2Name}.${domainName}
+  - ${node3IP}
+  - ${node3Name}.${domainName}
+  - ${node4IP}
+  - ${node4Name}.${domainName}
+
+patches:
+  - |-
+    machine:
+      disks:
+        - device: /dev/nvme0n1
+          partitions:
+            - mountpoint: /var/mnt/longhorn
+      features:
+        kubePrism:
+          enabled: true
+          port: 7445
+      files:
+        - path: /var/etc/nut/upsmon.conf
+          op: create
+          permissions: 0o600
+          content: |-
+            MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
+            SHUTDOWNCMD "/sbin/poweroff"
+      kubelet:
+        extraArgs:
+          rotate-server-certificates: true
+        extraMounts:
+          - destination: /var/mnt/longhorn
+            type: bind
+            source: /var/mnt/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
+      sysctls:
+        vm.nr_hugepages: 1024
+      time:
+        servers:
+          - time.cloudflare.com
+          - time.nist.gov
+        bootTimeout: 2m0s
+    cluster:
+      discovery:
+        registries:
+            kubernetes:
+                disabled: false
+            service:
+              disabled: true
+      extraManifests:
+          - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+          - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+      network:
+        cni:
+          name: none
+      proxy:
+        disabled: true
+
+nodes:
+  - hostname: ${node1Name}.${domainName}
+    ipAddress: ${node1IP}
+    talosImageURL: ${talosImageURL}
+    installDisk: /dev/mmcblk0
+    controlPlane: true
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node1Interface}
+        addresses:
+          - ${node1IP}/23
+        vip:
+          ip: ${clusterVIP}
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+  - hostname: ${node2Name}.${domainName}
+    ipAddress: ${node2IP}
+    talosImageURL: ${talosImageURL}
+    installDisk: /dev/mmcblk0
+    controlPlane: true
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node2Interface}
+        addresses:
+          - ${node2IP}/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+  - hostname: ${node3Name}.${domainName}
+    ipAddress: ${node3IP}
+    talosImageURL: ${talosImageURL}
+    installDisk: /dev/mmcblk0
+    controlPlane: true
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node3Interface}
+        addresses:
+          - ${node3IP}/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+  - hostname: ${node4Name}.${domainName}
+    ipAddress: ${node4IP}
+    talosImageURL: ${talosImageURL}
+    installDisk: /dev/mmcblk0
+    kernelModules:
+      - name: rockchip-cpufreq
+    controlPlane: false
+    nodeLabels:
+      kubernetes.io/role: worker
+    nameservers:
+      - ${nameServer}
+    networkInterfaces:
+      - interface: ${node4Interface}
+        addresses:
+          - ${node4IP}/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${gateway}
+
+controlPlane:
+  kernelModules:
+    - name: rockchip-cpufreq
+  patches:
+    - |-
+      - path: /cluster/apiServer/admissionControl/0/configuration/exemptions/namespaces/-
+        op: add
+        value: longhorn-system
+  schematic:
+    customization:
+      extraKernelArgs:
+        - irqchip.gicv3_pseudo_nmi=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/nut-client
+          - siderolabs/util-linux-tools
+
+worker:
+  kernelModules:
+    - name: rockchip-cpufreq
+  schematic:
+    customization:
+      extraKernelArgs:
+        - irqchip.gicv3_pseudo_nmi=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/nut-client
+          - siderolabs/util-linux-tools

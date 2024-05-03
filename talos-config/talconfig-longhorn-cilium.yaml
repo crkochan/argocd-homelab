@@ -1,6 +1,6 @@
 ---
 clusterName: ${clusterName}
-talosVersion: v1.6.7
+talosVersion: ${talosVersion}
 kubernetesVersion: v1.29.3
 endpoint: https://${clusterVIP}:6443
 domain: cluster.local

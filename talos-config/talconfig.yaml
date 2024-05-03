@@ -1,7 +1,6 @@
 ---
 clusterName: ${clusterName}
-talosVersion: v1.6.7
-talosImageURL: ${talosImageURL}
+talosVersion: ${talosVersion}
 kubernetesVersion: v1.29.3
 endpoint: https://${clusterVIP}:6443
 domain: cluster.local
@@ -59,6 +58,7 @@ patches:
 nodes:
   - hostname: ${node1Name}.${domainName}
     ipAddress: ${node1IP}
+    talosImageURL: ${talosImageURL}
     installDisk: /dev/mmcblk0
     controlPlane: true
     nameservers:
@@ -74,6 +74,7 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node2Name}.${domainName}
     ipAddress: ${node2IP}
+    talosImageURL: ${talosImageURL}
     installDisk: /dev/mmcblk0
     controlPlane: true
     nameservers:
@@ -87,6 +88,7 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node3Name}.${domainName}
     ipAddress: ${node3IP}
+    talosImageURL: ${talosImageURL}
     installDisk: /dev/mmcblk0
     controlPlane: true
     nameservers:
@@ -100,6 +102,7 @@ nodes:
             gateway: ${gateway}
   - hostname: ${node4Name}.${domainName}
     ipAddress: ${node4IP}
+    talosImageURL: ${talosImageURL}
     installDisk: /dev/mmcblk0
     kernelModules:
       - name: rockchip-cpufreq

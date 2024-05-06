@@ -30,13 +30,6 @@ additionalApiServerCertSans:
 patches:
   - |-
     machine:
-      files:
-        - path: /var/etc/nut/upsmon.conf
-          op: create
-          permissions: 0o600
-          content: |-
-            MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
-            SHUTDOWNCMD "/sbin/poweroff"
       kubelet:
         extraArgs:
           rotate-server-certificates: true
@@ -120,13 +113,13 @@ nodes:
             gateway: ${gateway}
 
 controlPlane:
-  # extensionServices:
-  #   - name: nut-client
-  #     configFiles:
-  #       - content: |-
-  #           MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
-  #           SHUTDOWNCMD "/sbin/poweroff"
-  #         mountPath: /usr/local/etc/nut/upsmon.conf
+  extensionServices:
+    - name: nut-client
+      configFiles:
+        - content: |-
+            MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
+            SHUTDOWNCMD "/sbin/poweroff"
+          mountPath: /usr/local/etc/nut/upsmon.conf
   kernelModules:
     - name: rockchip-cpufreq
   schematic:
@@ -138,13 +131,13 @@ controlPlane:
           - siderolabs/util-linux-tools
 
 worker:
-  # extensionServices:
-  #   - name: nut-client
-  #     configFiles:
-  #       - content: |-
-  #           MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
-  #           SHUTDOWNCMD "/sbin/poweroff"
-  #         mountPath: /usr/local/etc/nut/upsmon.conf
+  extensionServices:
+    - name: nut-client
+      configFiles:
+        - content: |-
+            MONITOR ${nutName}@${nutServer} 1 ${nutUser} ${nutPassword} slave
+            SHUTDOWNCMD "/sbin/poweroff"
+          mountPath: /usr/local/etc/nut/upsmon.conf
   kernelModules:
     - name: rockchip-cpufreq
   schematic:

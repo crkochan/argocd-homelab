@@ -16,6 +16,9 @@ spec:
       values: |
         schedule: '*/15 * * * *'
         suspend: 'false'
+        deschedulerPolicyAPIVersion: 'descheduler/v1alpha2'
+        deschedulerPolicy:
+          strategies: null
   syncPolicy:
     automated:
       allowEmpty: true

@@ -61,7 +61,7 @@ spec:
                     - RemovePodsViolatingNodeTaints
                     - RemovePodsViolatingNodeAffinity
                     - RemovePodsViolatingInterPodAntiAffinity
-          strategies: {}
+          strategies: null
   syncPolicy:
     automated:
       allowEmpty: true

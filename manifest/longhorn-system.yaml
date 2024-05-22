@@ -55,6 +55,8 @@ spec:
         metrics:
           serviceMonitor:
             enabled: true
+        networkPolicies:
+          enabled: true
         preUpgradeChecker:
           jobEnabled: false
   syncPolicy:

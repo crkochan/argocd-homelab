@@ -61,11 +61,11 @@ patches:
       extraManifests:
           - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
           - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-      # network:
-      #   cni:
-      #     name: none
-      # proxy:
-      #   disabled: true
+      network:
+        cni:
+          name: none
+      proxy:
+        disabled: true
 
 nodes:
   - hostname: ${node1Name}.${domainName}
@@ -76,6 +76,9 @@ nodes:
     nameservers:
       - ${nameServer}
     networkInterfaces:
+      - deviceSelector:
+          busPath: fe1c0000.ethernet
+        dhcp: true
       - interface: ${node1Interface}
         addresses:
           - ${node1IP}/23
@@ -92,6 +95,9 @@ nodes:
     nameservers:
       - ${nameServer}
     networkInterfaces:
+      - deviceSelector:
+          busPath: fe1c0000.ethernet
+        dhcp: true
       - interface: ${node2Interface}
         addresses:
           - ${node2IP}/23
@@ -106,6 +112,9 @@ nodes:
     nameservers:
       - ${nameServer}
     networkInterfaces:
+      - deviceSelector:
+          busPath: fe1c0000.ethernet
+        dhcp: true
       - interface: ${node3Interface}
         addresses:
           - ${node3IP}/23
@@ -124,6 +133,9 @@ nodes:
     nameservers:
       - ${nameServer}
     networkInterfaces:
+      - deviceSelector:
+          busPath: fe1c0000.ethernet
+        dhcp: true
       - interface: ${node4Interface}
         addresses:
           - ${node4IP}/23

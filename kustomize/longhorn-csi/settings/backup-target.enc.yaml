@@ -1,0 +1,26 @@
+apiVersion: longhorn.io/v1beta2
+kind: Setting
+metadata:
+    name: backup-target
+    namespace: longhorn-system
+value: ENC[AES256_GCM,data:M/H1+S7XjPW/BV3xUvfzU2DLGp9j0p6TFnu+edXutZ1REH2sse9QjTvg491JZokZQCuTptfYU8d7FA==,iv:SPgBVwh7JUAKiiIHbp0Of21yEpmajOLz9oKcUlTvZ+U=,tag:S1gDYSgW+XpL0fvwCxQt4g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1sxyu34lk9dn7p7g9vz7xncx0uu6vneyl2fj3yszajzc3nfscastswkwssp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwd0FscGIvQnhWblRid1lt
+            Yjl0S0EwdmZ2YkQ3UUVhYXB2VlhvWW44MTFVClFoZHI5VEp2bnE4bFoxdVVyNTRv
+            WmhDQTlpeHlKUWliR09IMXFnWFFhaG8KLS0tIE93YkpsRUE3blowZHphckR5TTVX
+            ZVZVdjFwQzhWdHpqMk0xNE5lb3pMZGcKyn6MfvNJFq+84y5W5LjfLZyqNANu3N4o
+            454BvXlMO0AqfKsHf5pW8jw0b4UcYTPZ2+mUUdeOtLs2OSoAlLYauQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-05-23T00:13:01Z"
+    mac: ENC[AES256_GCM,data:nhCglEGTziohUN2b5e0C4u6IiRiRVAXq72Jp3Wj3VWxNaC6Vc12mVJXOdXfucpLZbwdftZ4abwRF+V2icPlhxkNOIaeF/g+fQ5TMIOGsmWcfo1lDv5fia24Xdvpc4Xmc9jJCkySlW9F+jsnxmT/cweUobkbkl1hIynv6W2kozGU=,iv:010KvuwAKh0TFNPMe5JHRqbx+FFjTVrjA3P7hCLr9U0=,tag:Ir1VH3r1ZAOjLrkzwjlniw==,type:str]
+    pgp: []
+    unencrypted_regex: ^(apiVersion|metadata|kind|type)$
+    version: 3.8.1

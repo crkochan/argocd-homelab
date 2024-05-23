@@ -65,6 +65,28 @@ spec:
       prune: true
       selfHeal: true
 ---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn-settings
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  destination:
+    namespace: longhorn-system
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    path: kustomize/longhorn-csi/settings
+    repoURL: https://github.com/crkochan/argocd-homelab.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

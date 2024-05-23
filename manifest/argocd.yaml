@@ -50,7 +50,7 @@ spec:
   source:
     chart: argo-cd
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 6.11.0
+    targetRevision: 6.11.1
     helm:
       values: |
         configs:

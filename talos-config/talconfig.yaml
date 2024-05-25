@@ -125,6 +125,9 @@ controlPlane:
       - path: /cluster/apiServer/admissionControl/0/configuration/exemptions/namespaces/-
         op: add
         value: rook-ceph-system
+      - path: /cluster/apiServer/admissionControl/0/configuration/exemptions/namespaces/-
+        op: add
+        value: metallb-system
   schematic:
     customization:
       extraKernelArgs:

@@ -13,7 +13,7 @@ spec:
   source:
     chart: rook-ceph
     repoURL: https://charts.rook.io/release
-    targetRevision: v1.14.3
+    targetRevision: v1.14.4
     helm:
       valuesObject:
         currentNamespaceOnly: false
@@ -48,7 +48,7 @@ spec:
   source:
     chart: rook-ceph-cluster
     repoURL: https://charts.rook.io/release
-    targetRevision: v1.14.3
+    targetRevision: v1.14.4
     helm:
       valuesObject:
         operatorNamespace: rook-ceph-system

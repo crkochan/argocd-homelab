@@ -20,7 +20,7 @@ spec:
         csi:
           enableLiveness: true
           serviceMonitor:
-            enabled: true
+            enabled: false
           readAffinity:
             enabled: true
         monitoring:

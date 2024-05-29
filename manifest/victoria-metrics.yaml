@@ -38,7 +38,6 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-      - ApplyOutOfSyncOnly=true
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: privileged

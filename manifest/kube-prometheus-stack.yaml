@@ -20,7 +20,7 @@ spec:
       jqPathExpressions:
         - .spec.template.spec.containers[].resources
     - group: "admissionregistration.k8s.io"
-      kind: "ValidatingWebhookConfiguration"
+      kind: "*"
       jqPathExpressions:
         - .webhooks[].clientConfig.caBundle
   project: homelab
@@ -74,6 +74,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: privileged

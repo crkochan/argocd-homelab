@@ -15,6 +15,10 @@ spec:
       jqPathExpressions:
         - .spec.template.spec.containers[].resources
         - .spec.template.spec.initContainers[].resources
+    - group: "apps"
+      kind: "DaemonSet"
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
   project: homelab
   source:
     chart: victoria-metrics-k8s-stack

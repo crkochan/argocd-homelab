@@ -9,6 +9,11 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
+  # ignoreDifferences:
+  # - group: "apps"
+  #   kind: "Deployment"
+  #   jsonPointers:
+  #   - /spec/replicas
   project: homelab
   source:
     chart: victoria-metrics-k8s-stack
@@ -32,7 +37,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=false
+      - ServerSideApply=true
       - ApplyOutOfSyncOnly=true
     managedNamespaceMetadata:
       labels:

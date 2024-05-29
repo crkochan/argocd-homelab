@@ -70,6 +70,8 @@ spec:
               nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
             host:
               name: turing-kube-ceph.<path:stringreplacesecret#domain>
+        monitoring:
+          enabled: true
   syncPolicy:
     automated:
       allowEmpty: true

@@ -53,6 +53,7 @@ spec:
                     requests:
                       storage: 10Gi
         grafana:
+          defaultDashboardsTimezone: browser
           ingress:
             ingressClassName: nginx
             enabled: true

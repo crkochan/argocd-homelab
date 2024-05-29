@@ -32,7 +32,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
+      - ServerSideApply=false
       - ApplyOutOfSyncOnly=true
     managedNamespaceMetadata:
       labels:

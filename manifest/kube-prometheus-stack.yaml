@@ -9,6 +9,20 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
+  ignoreDifferences:
+    - group: "apps"
+      kind: "Deployment"
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+        - .spec.template.spec.initContainers[].resources
+    - group: "apps"
+      kind: "DaemonSet"
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
+    - group: "admissionregistration.k8s.io"
+      kind: "ValidatingWebhookConfiguration"
+      jqPathExpressions:
+        - .webhooks[].clientConfig.caBundle
   project: homelab
   source:
     chart: kube-prometheus-stack

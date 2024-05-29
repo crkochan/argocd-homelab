@@ -46,7 +46,7 @@ spec:
     helm:
       values: |
         crd:
-          create: true
+          create: false
         extraEnvVars:
           - name: EXTERNAL_DNS_PIHOLE_SERVER
             valueFrom:

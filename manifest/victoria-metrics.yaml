@@ -9,11 +9,11 @@ spec:
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
-  # ignoreDifferences:
-  # - group: "apps"
-  #   kind: "Deployment"
-  #   jsonPointers:
-  #   - /spec/replicas
+  ignoreDifferences:
+    - group: "apps"
+      kind: "Deployment"
+      jqPathExpressions:
+        - .spec.template.spec.containers[].resources
   project: homelab
   source:
     chart: victoria-metrics-k8s-stack
@@ -38,6 +38,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: privileged

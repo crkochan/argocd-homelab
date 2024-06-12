@@ -54,6 +54,8 @@ spec:
                       storage: 10Gi
         grafana:
           defaultDashboardsTimezone: browser
+          deploymentStrategy:
+            type: Recreate
           ingress:
             ingressClassName: nginx
             enabled: true

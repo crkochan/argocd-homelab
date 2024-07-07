@@ -71,7 +71,7 @@ spec:
             host:
               name: turing-kube-ceph.<path:stringreplacesecret#domain>
         monitoring:
-          enabled: true
+          enabled: false
   syncPolicy:
     automated:
       allowEmpty: true

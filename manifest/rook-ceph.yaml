@@ -20,11 +20,11 @@ spec:
         csi:
           enableLiveness: true
           serviceMonitor:
-            enabled: false
+            enabled: true
           readAffinity:
             enabled: true
         monitoring:
-          enabled: false
+          enabled: true
   syncPolicy:
     automated:
       allowEmpty: true
@@ -71,7 +71,7 @@ spec:
             host:
               name: turing-kube-ceph.<path:stringreplacesecret#domain>
         monitoring:
-          enabled: false
+          enabled: true
   syncPolicy:
     automated:
       allowEmpty: true

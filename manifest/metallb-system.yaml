@@ -11,7 +11,7 @@ spec:
   source:
     chart: metallb
     repoURL: https://metallb.github.io/metallb
-    targetRevision: 0.14.6
+    targetRevision: 0.14.7
   # This is a workaround for mutated CRD, where ingoreDifferences must be set
   # https://github.com/metallb/metallb/issues/1681
   ignoreDifferences:

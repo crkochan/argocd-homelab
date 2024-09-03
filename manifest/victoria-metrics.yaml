@@ -23,7 +23,7 @@ spec:
   source:
     chart: victoria-metrics-k8s-stack
     repoURL: https://victoriametrics.github.io/helm-charts/
-    targetRevision: 0.25.11
+    targetRevision: 0.25.12
     helm:
       valuesObject:
         argocdReleaseOverride: "vm"

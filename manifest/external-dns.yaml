@@ -48,7 +48,7 @@ spec:
   source:
     chart: external-dns
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 7.5.7
+    targetRevision: 8.9.2
     helm:
       values: |
         crd:
